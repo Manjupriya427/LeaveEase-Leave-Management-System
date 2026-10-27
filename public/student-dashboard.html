@@ -1,0 +1,551 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeaveEase | Student Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      background: #faf8fc;
+      color: #454052;
+      font-family: Arial, sans-serif;
+    }
+
+    .dashboard {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 220px;
+      padding: 28px 20px;
+      background: #eee8f8;
+      box-sizing: border-box;
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: bold;
+      color: #7966a7;
+      margin-bottom: 40px;
+    }
+
+    .sidebar a,
+    .sidebar button {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 10px;
+      text-align: left;
+      border: none;
+      border-radius: 10px;
+      color: #514768;
+      text-decoration: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    .sidebar a.active,
+    .sidebar a:hover,
+    .sidebar button:hover {
+      background: #fff;
+    }
+
+    .main {
+      flex: 1;
+      padding: 32px;
+      min-width: 0;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .muted {
+      color: #898394;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .card,
+    .panel {
+      background: white;
+      border: 1px solid #eee9f4;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 5px 20px #5147680a;
+    }
+
+    .card p {
+      margin: 0 0 12px;
+      color: #898394;
+    }
+
+    .number {
+      font-size: 30px;
+      font-weight: bold;
+      color: #7966a7;
+    }
+
+    .section-title {
+      font-size: 20px;
+      margin: 0 0 20px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.2fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 7px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #ddd5e9;
+      border-radius: 9px;
+      background: #fff;
+      font: inherit;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .primary-btn {
+      margin-top: 18px;
+      padding: 12px 17px;
+      border: none;
+      border-radius: 9px;
+      background: #8a76b5;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .primary-btn:hover {
+      background: #75619f;
+    }
+
+    .message {
+      min-height: 20px;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      min-width: 470px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 13px 10px;
+      border-bottom: 1px solid #f0edf4;
+    }
+
+    th {
+      color: #898394;
+      font-weight: 600;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      background: #fff1d9;
+      color: #916a23;
+      font-size: 12px;
+    }
+
+    .status.Approved {
+      background: #e1f5e9;
+      color: #27794a;
+    }
+
+    .status.Rejected {
+      background: #fde8eb;
+      color: #a53c50;
+    }
+
+    .cancel-btn {
+      border: 1px solid #e3b7c0;
+      background: #fff6f7;
+      color: #a34d60;
+      border-radius: 7px;
+      padding: 7px 9px;
+      cursor: pointer;
+    }
+
+    .empty {
+      color: #898394;
+      padding: 20px 0;
+    }
+
+    @media (max-width: 900px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .dashboard {
+        display: block;
+      }
+
+      .sidebar {
+        width: 100%;
+        padding: 18px;
+      }
+
+      .brand {
+        margin-bottom: 15px;
+      }
+
+      .sidebar a,
+      .sidebar button {
+        display: inline-block;
+        width: auto;
+        margin: 3px;
+      }
+
+      .main {
+        padding: 20px 14px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="brand">✿ LeaveEase</div>
+      <a class="active" href="#overview">Overview</a>
+      <a href="#apply">Apply for Leave</a>
+      <a href="#history">Leave History</a>
+      <button id="logoutBtn" type="button">↪ Logout</button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar" id="overview">
+        <div>
+          <h1>Student Dashboard</h1>
+          <p class="muted">Welcome back, <strong id="studentName">Student</strong>!</p>
+        </div>
+        <p class="muted" id="studentRoll">Your leave overview</p>
+      </header>
+
+      <section class="cards">
+        <div class="card">
+          <p>Casual Leave Balance</p>
+          <div class="number" id="casualBalance">--</div>
+          <small class="muted">Available days</small>
+        </div>
+        <div class="card">
+          <p>Medical Leave Balance</p>
+          <div class="number" id="medicalBalance">--</div>
+          <small class="muted">Available days</small>
+        </div>
+        <div class="card">
+          <p>Pending Applications</p>
+          <div class="number" id="pendingCount">--</div>
+          <small class="muted">Awaiting a decision</small>
+        </div>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel" id="apply">
+          <h2 class="section-title">Apply for Leave</h2>
+          <p class="muted">Enter your leave details below.</p>
+
+          <form id="leaveForm">
+            <label for="leaveType">Leave type</label>
+            <select id="leaveType" required>
+              <option value="casual">Casual Leave</option>
+              <option value="medical">Medical Leave</option>
+            </select>
+
+            <label for="startDate">Start date</label>
+            <input id="startDate" type="date" required>
+
+            <label for="endDate">End date</label>
+            <input id="endDate" type="date" required>
+
+            <label for="reason">Reason for leave</label>
+            <textarea id="reason" rows="4" maxlength="500"
+              placeholder="Enter your reason..." required></textarea>
+
+            <button class="primary-btn" type="submit">
+              Submit Application
+            </button>
+            <p id="formMessage" class="message" role="status"></p>
+          </form>
+        </section>
+
+        <section class="panel" id="history">
+          <h2 class="section-title">Leave History</h2>
+          <p class="muted">Track your submitted applications.</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Dates</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="leaveTable">
+                <tr>
+                  <td colspan="4">Loading applications...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p id="historyMessage" class="message" role="status"></p>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const leaveForm = document.getElementById("leaveForm");
+    const formMessage = document.getElementById("formMessage");
+    const leaveTable = document.getElementById("leaveTable");
+    const historyMessage = document.getElementById("historyMessage");
+
+    async function api(url, options = {}) {
+      const response = await fetch(url, {
+        credentials: "same-origin",
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          ...(options.headers || {})
+        }
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.message || "Request failed.");
+      }
+
+      return data;
+    }
+
+    function showMessage(element, message, success = false) {
+      element.textContent = message;
+      element.style.color = success ? "#27794a" : "#a34d60";
+    }
+
+    function formatDate(date) {
+      return new Date(date).toLocaleDateString("en-IN");
+    }
+
+    function addCell(row, value) {
+      const cell = document.createElement("td");
+      cell.textContent = value;
+      row.appendChild(cell);
+      return cell;
+    }
+
+    async function loadDashboard() {
+      try {
+        const user = await api("/api/auth/me");
+
+        document.getElementById("studentName").textContent =
+          user.name || "Student";
+        document.getElementById("studentRoll").textContent =
+          user.rollNumber || user.email || "";
+
+        document.getElementById("casualBalance").textContent =
+          user.casualLeave ?? 0;
+        document.getElementById("medicalBalance").textContent =
+          user.medicalLeave ?? 0;
+
+        await loadLeaves();
+      } catch (error) {
+        showMessage(historyMessage, error.message);
+        if (error.message.toLowerCase().includes("log in")) {
+          window.location.href = "/";
+        }
+      }
+    }
+
+    async function loadLeaves() {
+      try {
+        const leaves = await api("/api/leaves/my-leaves");
+        leaveTable.replaceChildren();
+
+        document.getElementById("pendingCount").textContent =
+          leaves.filter(leave => leave.status === "Pending").length;
+
+        if (leaves.length === 0) {
+          const row = document.createElement("tr");
+          const cell = addCell(row, "No leave applications yet.");
+          cell.colSpan = 4;
+          cell.className = "empty";
+          leaveTable.appendChild(row);
+          return;
+        }
+
+        leaves.forEach(leave => {
+          const row = document.createElement("tr");
+
+          addCell(
+            row,
+            leave.leaveType === "casual" ? "Casual" : "Medical"
+          );
+
+          addCell(
+            row,
+            formatDate(leave.startDate) + " – " +
+            formatDate(leave.endDate)
+          );
+
+          const statusCell = addCell(row, "");
+          const status = document.createElement("span");
+          status.className = "status " + leave.status;
+          status.textContent = leave.status;
+          statusCell.appendChild(status);
+
+          const actionCell = addCell(row, "");
+
+          if (leave.status === "Pending") {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "cancel-btn";
+            button.textContent = "Cancel";
+
+            button.addEventListener("click", async () => {
+              if (!confirm("Cancel this leave application?")) return;
+
+              try {
+                await api("/api/leaves/" + encodeURIComponent(leave._id), {
+                  method: "DELETE"
+                });
+                showMessage(
+                  historyMessage,
+                  "Leave application cancelled.",
+                  true
+                );
+                await loadDashboard();
+              } catch (error) {
+                showMessage(historyMessage, error.message);
+              }
+            });
+
+            actionCell.appendChild(button);
+          } else {
+            actionCell.textContent = "—";
+          }
+
+          leaveTable.appendChild(row);
+        });
+      } catch (error) {
+        showMessage(historyMessage, error.message);
+      }
+    }
+
+    leaveForm.addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const startDate = document.getElementById("startDate").value;
+      const endDate = document.getElementById("endDate").value;
+      const reason = document.getElementById("reason").value.trim();
+
+      if (endDate < startDate) {
+        showMessage(formMessage, "End date cannot be before start date.");
+        return;
+      }
+
+      if (!reason) {
+        showMessage(formMessage, "Please enter a reason for leave.");
+        return;
+      }
+
+      try {
+        const data = await api("/api/leaves", {
+          method: "POST",
+          body: JSON.stringify({
+            leaveType: document.getElementById("leaveType").value,
+            startDate,
+            endDate,
+            reason
+          })
+        });
+
+        showMessage(
+          formMessage,
+          data.message || "Application submitted!",
+          true
+        );
+        leaveForm.reset();
+        await loadDashboard();
+      } catch (error) {
+        showMessage(formMessage, error.message);
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      try {
+        await api("/api/auth/logout", { method: "POST" });
+        window.location.href = "/";
+      } catch (error) {
+        showMessage(historyMessage, error.message);
+      }
+    });
+
+    document.getElementById("startDate").addEventListener("change", event => {
+      document.getElementById("endDate").min = event.target.value;
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>

@@ -1,0 +1,705 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeaveEase | Admin Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #faf8fc;
+      color: #454052;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 235px;
+      flex-shrink: 0;
+      padding: 28px 18px;
+      background: #eee8f8;
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: bold;
+      color: #7966a7;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-subtitle {
+      color: #898394;
+      font-size: 12px;
+      margin-bottom: 35px;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 13px;
+      margin-bottom: 9px;
+      border-radius: 10px;
+      color: #514768;
+      text-decoration: none;
+    }
+
+    .nav-link.active,
+    .nav-link:hover {
+      background: white;
+    }
+
+    .logout {
+      margin-top: 25px;
+      border: 0;
+      background: transparent;
+      padding: 13px;
+      width: 100%;
+      text-align: left;
+      color: #a34d60;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 32px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 0 0 8px;
+    }
+
+    .muted {
+      color: #898394;
+    }
+
+    .admin-tag {
+      padding: 10px 15px;
+      border-radius: 20px;
+      background: #e8e0f5;
+      color: #7966a7;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 17px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card,
+    .panel {
+      background: white;
+      border: 1px solid #eee9f4;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 5px 20px #5147680a;
+    }
+
+    .stat-card p {
+      color: #898394;
+      margin: 0 0 12px;
+      font-size: 14px;
+    }
+
+    .stat-number {
+      color: #7966a7;
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    select,
+    input {
+      padding: 10px 12px;
+      border: 1px solid #ddd5e9;
+      border-radius: 9px;
+      background: white;
+      font: inherit;
+      max-width: 100%;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 14px 10px;
+      border-bottom: 1px solid #f0edf4;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #898394;
+      font-weight: 600;
+      background: #fdfcff;
+    }
+
+    tbody tr:hover {
+      background: #faf8fc;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      white-space: nowrap;
+      background: #fff1d9;
+      color: #916a23;
+    }
+
+    .status.Approved {
+      background: #e1f5e9;
+      color: #27794a;
+    }
+
+    .status.Rejected {
+      background: #fde8eb;
+      color: #a53c50;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 7px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 7px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .approve {
+      background: #e1f5e9;
+      color: #27794a;
+    }
+
+    .reject {
+      background: #fde8eb;
+      color: #a53c50;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .message {
+      min-height: 20px;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+
+    .empty {
+      padding: 25px;
+      text-align: center;
+      color: #898394;
+    }
+
+    .student-table {
+      min-width: 850px;
+    }
+
+    .student-table td {
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 1050px) {
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 650px) {
+      .layout {
+        display: block;
+      }
+
+      .sidebar {
+        width: 100%;
+        padding: 18px;
+      }
+
+      .sidebar-subtitle {
+        margin-bottom: 15px;
+      }
+
+      .nav-link {
+        display: inline-block;
+        padding: 10px;
+      }
+
+      .logout {
+        width: auto;
+        margin-top: 0;
+      }
+
+      .main {
+        padding: 20px 13px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .panel {
+        padding: 15px;
+      }
+
+      .filters input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">✿ LeaveEase</div>
+      <div class="sidebar-subtitle">ADMINISTRATION PORTAL</div>
+
+      <a class="nav-link active" href="#overview">Overview</a>
+      <a class="nav-link" href="#applications">Leave Applications</a>
+      <a class="nav-link" href="#students">Students</a>
+
+      <button class="logout" id="logoutBtn" type="button">
+        ↪ Logout
+      </button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar" id="overview">
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p class="muted">
+            Manage student leave requests in one place.
+          </p>
+        </div>
+        <span class="admin-tag">Administrator</span>
+      </header>
+
+      <section class="stats">
+        <div class="stat-card">
+          <p>Total Students</p>
+          <div class="stat-number" id="totalStudents">--</div>
+        </div>
+
+        <div class="stat-card">
+          <p>Total Applications</p>
+          <div class="stat-number" id="totalLeaves">--</div>
+        </div>
+
+        <div class="stat-card">
+          <p>Pending Requests</p>
+          <div class="stat-number" id="pendingLeaves">--</div>
+        </div>
+
+        <div class="stat-card">
+          <p>Approved Requests</p>
+          <div class="stat-number" id="approvedLeaves">--</div>
+        </div>
+      </section>
+
+      <section class="panel" id="applications" style="margin-bottom:25px">
+        <div class="section-heading">
+          <h2>Leave Applications</h2>
+
+          <div class="filters">
+            <input
+              type="search"
+              id="searchInput"
+              placeholder="Search student..."
+              aria-label="Search student"
+            >
+
+            <select id="statusFilter" aria-label="Filter by status">
+              <option value="All">All statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+
+        <p id="applicationMessage" class="message" role="status"></p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Roll Number</th>
+                <th>Leave Type</th>
+                <th>Dates</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="leaveTable">
+              <tr>
+                <td colspan="7" class="empty">Loading applications...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" id="students">
+        <div class="section-heading">
+          <h2>Student Details</h2>
+          <span class="muted" id="studentCount">Loading students...</span>
+        </div>
+
+        <p id="studentMessage" class="message" role="status"></p>
+
+        <div class="table-wrap">
+          <table class="student-table">
+            <thead>
+              <tr>
+                <th>S.No.</th>
+                <th>Student Name</th>
+                <th>Roll Number</th>
+                <th>Email Address</th>
+                <th>Casual Leave</th>
+                <th>Medical Leave</th>
+              </tr>
+            </thead>
+
+            <tbody id="studentTable">
+              <tr>
+                <td colspan="6" class="empty">Loading students...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const leaveTable = document.getElementById("leaveTable");
+    const studentTable = document.getElementById("studentTable");
+    const applicationMessage = document.getElementById("applicationMessage");
+    const studentMessage = document.getElementById("studentMessage");
+
+    let allLeaves = [];
+    let allStudents = [];
+
+    async function api(url, options = {}) {
+      const response = await fetch(url, {
+        credentials: "same-origin",
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          ...(options.headers || {})
+        }
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.message || "Request failed.");
+      }
+
+      return data;
+    }
+
+    function showMessage(element, message, success = false) {
+      element.textContent = message;
+      element.style.color = success ? "#27794a" : "#a34d60";
+    }
+
+    function formatDate(date) {
+      return new Date(date).toLocaleDateString("en-IN");
+    }
+
+    function addCell(row, value) {
+      const cell = document.createElement("td");
+      cell.textContent = value ?? "—";
+      row.appendChild(cell);
+      return cell;
+    }
+
+    async function checkAdmin() {
+      const user = await api("/api/auth/me");
+
+      if (user.role !== "admin") {
+        window.location.href = "/";
+        throw new Error("Administrator access is required.");
+      }
+    }
+
+    async function loadLeaves() {
+      allLeaves = await api("/api/admin/leaves");
+
+      document.getElementById("totalLeaves").textContent =
+        allLeaves.length;
+
+      document.getElementById("pendingLeaves").textContent =
+        allLeaves.filter(leave => leave.status === "Pending").length;
+
+      document.getElementById("approvedLeaves").textContent =
+        allLeaves.filter(leave => leave.status === "Approved").length;
+
+      renderLeaves();
+    }
+
+    function renderLeaves() {
+      const filter = document.getElementById("statusFilter").value;
+      const search = document.getElementById("searchInput")
+        .value.trim().toLowerCase();
+
+      const filtered = allLeaves.filter(leave => {
+        const student = leave.user || {};
+
+        const matchesStatus =
+          filter === "All" || leave.status === filter;
+
+        const matchesSearch =
+          (student.name || "").toLowerCase().includes(search) ||
+          (student.rollNumber || "").toLowerCase().includes(search) ||
+          (student.email || "").toLowerCase().includes(search);
+
+        return matchesStatus && matchesSearch;
+      });
+
+      leaveTable.replaceChildren();
+
+      if (filtered.length === 0) {
+        const row = document.createElement("tr");
+        const cell = addCell(row, "No matching applications found.");
+        cell.colSpan = 7;
+        cell.className = "empty";
+        leaveTable.appendChild(row);
+        return;
+      }
+
+      filtered.forEach(leave => {
+        const row = document.createElement("tr");
+        const student = leave.user || {};
+
+        addCell(row, student.name || "Unknown student");
+        addCell(row, student.rollNumber || "—");
+        addCell(
+          row,
+          leave.leaveType === "casual" ? "Casual Leave" : "Medical Leave"
+        );
+
+        addCell(
+          row,
+          formatDate(leave.startDate) + " – " +
+          formatDate(leave.endDate)
+        );
+
+        addCell(row, leave.reason);
+
+        const statusCell = addCell(row, "");
+        const status = document.createElement("span");
+        status.className = "status " + leave.status;
+        status.textContent = leave.status;
+        statusCell.appendChild(status);
+
+        const actionCell = addCell(row, "");
+
+        if (leave.status === "Pending") {
+          const buttons = document.createElement("div");
+          buttons.className = "action-buttons";
+
+          const approveBtn = document.createElement("button");
+          approveBtn.className = "btn approve";
+          approveBtn.textContent = "Approve";
+          approveBtn.type = "button";
+          approveBtn.addEventListener("click", () => {
+            updateLeave(leave._id, "Approved");
+          });
+
+          const rejectBtn = document.createElement("button");
+          rejectBtn.className = "btn reject";
+          rejectBtn.textContent = "Reject";
+          rejectBtn.type = "button";
+          rejectBtn.addEventListener("click", () => {
+            updateLeave(leave._id, "Rejected");
+          });
+
+          buttons.append(approveBtn, rejectBtn);
+          actionCell.appendChild(buttons);
+        } else {
+          actionCell.textContent = "Processed";
+        }
+
+        leaveTable.appendChild(row);
+      });
+    }
+
+    async function updateLeave(id, status) {
+      const action = status === "Approved" ? "approve" : "reject";
+
+      if (!confirm("Are you sure you want to " + action + " this request?")) {
+        return;
+      }
+
+      try {
+        await api("/api/admin/leaves/" + encodeURIComponent(id), {
+          method: "PATCH",
+          body: JSON.stringify({ status })
+        });
+
+        showMessage(
+          applicationMessage,
+          "Leave application " + status.toLowerCase() + " successfully.",
+          true
+        );
+
+        await Promise.all([loadLeaves(), loadStudents()]);
+      } catch (error) {
+        showMessage(applicationMessage, error.message);
+      }
+    }
+
+    async function loadStudents() {
+      try {
+        allStudents = await api("/api/admin/students");
+
+        document.getElementById("totalStudents").textContent =
+          allStudents.length;
+
+        document.getElementById("studentCount").textContent =
+          allStudents.length + " student(s)";
+
+        studentTable.replaceChildren();
+
+        if (allStudents.length === 0) {
+          const row = document.createElement("tr");
+          const cell = addCell(row, "No student accounts found.");
+          cell.colSpan = 6;
+          cell.className = "empty";
+          studentTable.appendChild(row);
+          return;
+        }
+
+        allStudents.forEach((student, index) => {
+          const row = document.createElement("tr");
+
+          addCell(row, index + 1);
+          addCell(row, student.name || "—");
+          addCell(row, student.rollNumber || "—");
+          addCell(row, student.email || "—");
+          addCell(row, (student.casualLeave ?? 0) + " days");
+          addCell(row, (student.medicalLeave ?? 0) + " days");
+
+          studentTable.appendChild(row);
+        });
+      } catch (error) {
+        document.getElementById("studentCount").textContent =
+          "Unable to load students";
+
+        studentTable.replaceChildren();
+
+        const row = document.createElement("tr");
+        const cell = addCell(row, error.message);
+        cell.colSpan = 6;
+        cell.className = "empty";
+        studentTable.appendChild(row);
+
+        showMessage(studentMessage, error.message);
+        throw error;
+      }
+    }
+
+    document.getElementById("statusFilter").addEventListener(
+      "change",
+      renderLeaves
+    );
+
+    document.getElementById("searchInput").addEventListener(
+      "input",
+      renderLeaves
+    );
+
+    document.getElementById("logoutBtn").addEventListener(
+      "click",
+      async () => {
+        try {
+          await api("/api/auth/logout", { method: "POST" });
+          window.location.href = "/";
+        } catch (error) {
+          showMessage(applicationMessage, error.message);
+        }
+      }
+    );
+
+    async function init() {
+      try {
+        await checkAdmin();
+        await Promise.all([loadLeaves(), loadStudents()]);
+      } catch (error) {
+        showMessage(applicationMessage, error.message);
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

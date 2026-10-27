@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeaveEase | Create Account</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="login-container">
+
+    <section class="welcome-panel">
+      <div class="brand">✿ LeaveEase</div>
+
+      <div class="welcome-content">
+        <span class="eyebrow">YOUR JOURNEY STARTS HERE</span>
+        <h1>A little more balance, every day.</h1>
+        <p>
+          One simple portal for leave applications,
+          request tracking, and leave management.
+        </p>
+        <div class="welcome-decoration">☁ &nbsp; ✦ &nbsp; ♡</div>
+      </div>
+
+      <p class="footer-note">Simple. Secure. Student-friendly.</p>
+    </section>
+
+    <section class="login-panel">
+      <div class="login-heading">
+        <span class="mini-label">CREATE ACCOUNT</span>
+        <h2>Create your account</h2>
+        <p>Register to access the LeaveEase portal.</p>
+      </div>
+
+      <form id="registerForm">
+        <label for="name">Full name</label>
+        <input
+          id="name"
+          type="text"
+          placeholder="Your full name"
+          required
+        >
+
+        <label for="rollNumber">Roll number</label>
+        <input
+          id="rollNumber"
+          type="text"
+          placeholder="Your roll number"
+          required
+        >
+
+        <label for="email">Email address</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="you@example.com"
+          required
+        >
+
+        <label for="password">Password (minimum 8 characters)</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="Create a password"
+          minlength="8"
+          required
+        >
+
+        <button type="submit">
+          Create account <span>→</span>
+        </button>
+
+        <p id="message" class="message" aria-live="polite"></p>
+      </form>
+
+      <p class="login-help">
+        Already have an account?
+        <a href="index.html">Sign in</a>
+      </p>
+    </section>
+
+  </main>
+
+  <script src="register.js"></script>
+</body>
+</html>
