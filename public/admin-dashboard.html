@@ -5,58 +5,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LeaveEase | Admin Dashboard</title>
-
   <style>
     * {
       box-sizing: border-box;
     }
-
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #faf8fc;
-      color: #454052;
+      background: #F5EBDD;
+      color: #3B241B;
     }
-
     .layout {
       display: flex;
       min-height: 100vh;
     }
-
     .sidebar {
       width: 235px;
       flex-shrink: 0;
       padding: 28px 18px;
-      background: #eee8f8;
+      background: #3B241B;
     }
-
     .brand {
       font-size: 23px;
       font-weight: bold;
-      color: #7966a7;
+      color: #E5D3BD;
       margin-bottom: 12px;
     }
-
     .sidebar-subtitle {
-      color: #898394;
+      color: #D0BBA5;
       font-size: 12px;
       margin-bottom: 35px;
     }
-
     .nav-link {
       display: block;
       padding: 13px;
       margin-bottom: 9px;
       border-radius: 10px;
-      color: #514768;
+      color: #F5EBDD;
       text-decoration: none;
     }
-
     .nav-link.active,
     .nav-link:hover {
-      background: white;
+      background: #FFFDF8;
+      color: #3B241B;
     }
-
     .logout {
       margin-top: 25px;
       border: 0;
@@ -64,17 +56,15 @@
       padding: 13px;
       width: 100%;
       text-align: left;
-      color: #a34d60;
+      color: #E6A69A;
       cursor: pointer;
       font-size: 15px;
     }
-
     .main {
       flex: 1;
       min-width: 0;
       padding: 32px;
     }
-
     .topbar {
       display: flex;
       justify-content: space-between;
@@ -83,53 +73,45 @@
       gap: 15px;
       margin-bottom: 28px;
     }
-
     h1 {
       font-size: 28px;
       margin: 0 0 8px;
     }
-
     .muted {
-      color: #898394;
+      color: #8B7565;
     }
-
     .admin-tag {
       padding: 10px 15px;
       border-radius: 20px;
-      background: #e8e0f5;
-      color: #7966a7;
+      background: #E5D3BD;
+      color: #6B4532;
       font-size: 13px;
       font-weight: bold;
     }
-
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 17px;
       margin-bottom: 25px;
     }
-
     .stat-card,
     .panel {
-      background: white;
-      border: 1px solid #eee9f4;
+      background: #FFFDF8;
+      border: 1px solid #E5D3BD;
       border-radius: 16px;
       padding: 22px;
-      box-shadow: 0 5px 20px #5147680a;
+      box-shadow: 0 5px 20px #3B241B0a;
     }
-
     .stat-card p {
-      color: #898394;
+      color: #8B7565;
       margin: 0 0 12px;
       font-size: 14px;
     }
-
     .stat-number {
-      color: #7966a7;
+      color: #6B4532;
       font-size: 30px;
       font-weight: bold;
     }
-
     .section-heading {
       display: flex;
       justify-content: space-between;
@@ -138,83 +120,72 @@
       flex-wrap: wrap;
       margin-bottom: 18px;
     }
-
     h2 {
       font-size: 20px;
       margin: 0;
     }
-
     .filters {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
     }
-
     select,
-    input {
+    input,
+    textarea {
       padding: 10px 12px;
-      border: 1px solid #ddd5e9;
+      border: 1px solid #E5D3BD;
       border-radius: 9px;
-      background: white;
+      background: #FFFDF8;
+      color: #3B241B;
       font: inherit;
       max-width: 100%;
     }
-
     .table-wrap {
       width: 100%;
       overflow-x: auto;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 850px;
+      min-width: 1250px;
       font-size: 13px;
     }
-
     th,
     td {
       text-align: left;
       padding: 14px 10px;
-      border-bottom: 1px solid #f0edf4;
+      border-bottom: 1px solid #E5D3BD;
       vertical-align: middle;
     }
-
     th {
-      color: #898394;
+      color: #8B7565;
       font-weight: 600;
-      background: #fdfcff;
+      background: #FFFDF8;
     }
-
     tbody tr:hover {
-      background: #faf8fc;
+      background: #F5EBDD;
     }
-
     .status {
       display: inline-block;
       padding: 6px 9px;
       border-radius: 20px;
       font-size: 12px;
       white-space: nowrap;
-      background: #fff1d9;
-      color: #916a23;
+      background: #F3E5C9;
+      color: #8A6330;
     }
-
     .status.Approved {
-      background: #e1f5e9;
-      color: #27794a;
+      background: #E3EBDD;
+      color: #496B4A;
     }
-
     .status.Rejected {
-      background: #fde8eb;
-      color: #a53c50;
+      background: #F5E1DA;
+      color: #A34B3F;
     }
-
     .action-buttons {
       display: flex;
       gap: 7px;
     }
-
     .btn {
       border: 0;
       border-radius: 7px;
@@ -223,53 +194,53 @@
       font-size: 12px;
       font-weight: bold;
     }
-
     .approve {
-      background: #e1f5e9;
-      color: #27794a;
+      background: #E3EBDD;
+      color: #496B4A;
     }
-
     .reject {
-      background: #fde8eb;
-      color: #a53c50;
+      background: #F5E1DA;
+      color: #A34B3F;
     }
-
     .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
-
     .message {
       min-height: 20px;
       overflow-wrap: anywhere;
       font-size: 14px;
     }
-
+    .rejection-text {
+      color: #A34B3F;
+      overflow-wrap: anywhere;
+      max-width: 220px;
+    }
     .empty {
       padding: 25px;
       text-align: center;
-      color: #898394;
+      color: #8B7565;
     }
-
     .student-table {
       min-width: 850px;
     }
-
     .student-table td {
       overflow-wrap: anywhere;
     }
-
-    @media (max-width: 1050px) {
+    @media (max-width: 1200px) {
+      .stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 850px) {
       .stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
-
     @media (max-width: 650px) {
       .layout {
         display: block;
       }
-
       .sidebar {
         width: 100%;
         padding: 18px;
@@ -305,7 +276,8 @@
         padding: 15px;
       }
 
-      .filters input {
+      .filters input,
+      .filters select {
         width: 100%;
       }
     }
@@ -314,6 +286,7 @@
 
 <body>
   <div class="layout">
+
     <aside class="sidebar">
       <div class="brand">✿ LeaveEase</div>
       <div class="sidebar-subtitle">ADMINISTRATION PORTAL</div>
@@ -328,6 +301,7 @@
     </aside>
 
     <main class="main">
+
       <header class="topbar" id="overview">
         <div>
           <h1>Admin Dashboard</h1>
@@ -338,7 +312,9 @@
         <span class="admin-tag">Administrator</span>
       </header>
 
+      <!-- Dashboard Statistics -->
       <section class="stats">
+
         <div class="stat-card">
           <p>Total Students</p>
           <div class="stat-number" id="totalStudents">--</div>
@@ -358,9 +334,17 @@
           <p>Approved Requests</p>
           <div class="stat-number" id="approvedLeaves">--</div>
         </div>
+
+        <div class="stat-card">
+          <p>Rejected Requests</p>
+          <div class="stat-number" id="rejectedLeaves">--</div>
+        </div>
+
       </section>
 
+      <!-- Leave Applications -->
       <section class="panel" id="applications" style="margin-bottom:25px">
+
         <div class="section-heading">
           <h2>Leave Applications</h2>
 
@@ -390,23 +374,30 @@
                 <th>Student</th>
                 <th>Roll Number</th>
                 <th>Leave Type</th>
-                <th>Dates</th>
-                <th>Reason</th>
+                <th>Leave Dates</th>
+                <th>Applied On</th>
+                <th>Student's Reason</th>
                 <th>Status</th>
+                <th>Rejection Message</th>
                 <th>Actions</th>
               </tr>
             </thead>
 
             <tbody id="leaveTable">
               <tr>
-                <td colspan="7" class="empty">Loading applications...</td>
+                <td colspan="9" class="empty">
+                  Loading applications...
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
+
       </section>
 
+      <!-- Student Details -->
       <section class="panel" id="students">
+
         <div class="section-heading">
           <h2>Student Details</h2>
           <span class="muted" id="studentCount">Loading students...</span>
@@ -429,24 +420,33 @@
 
             <tbody id="studentTable">
               <tr>
-                <td colspan="6" class="empty">Loading students...</td>
+                <td colspan="6" class="empty">
+                  Loading students...
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
+
       </section>
+
     </main>
   </div>
 
   <script>
     const leaveTable = document.getElementById("leaveTable");
     const studentTable = document.getElementById("studentTable");
-    const applicationMessage = document.getElementById("applicationMessage");
-    const studentMessage = document.getElementById("studentMessage");
+
+    const applicationMessage =
+      document.getElementById("applicationMessage");
+
+    const studentMessage =
+      document.getElementById("studentMessage");
 
     let allLeaves = [];
     let allStudents = [];
 
+    // API helper
     async function api(url, options = {}) {
       const response = await fetch(url, {
         credentials: "same-origin",
@@ -466,15 +466,26 @@
       return data;
     }
 
+    // Display messages
     function showMessage(element, message, success = false) {
       element.textContent = message;
-      element.style.color = success ? "#27794a" : "#a34d60";
+      element.style.color = success ? "#496B4A" : "#A34B3F";
     }
 
+    // Format dates
     function formatDate(date) {
-      return new Date(date).toLocaleDateString("en-IN");
+      if (!date) return "—";
+
+      const parsedDate = new Date(date);
+
+      if (Number.isNaN(parsedDate.getTime())) {
+        return "—";
+      }
+
+      return parsedDate.toLocaleDateString("en-IN");
     }
 
+    // Create table cells safely
     function addCell(row, value) {
       const cell = document.createElement("td");
       cell.textContent = value ?? "—";
@@ -482,6 +493,7 @@
       return cell;
     }
 
+    // Check administrator login
     async function checkAdmin() {
       const user = await api("/api/auth/me");
 
@@ -491,6 +503,7 @@
       }
     }
 
+    // Load all leave applications and statistics
     async function loadLeaves() {
       allLeaves = await api("/api/admin/leaves");
 
@@ -498,18 +511,31 @@
         allLeaves.length;
 
       document.getElementById("pendingLeaves").textContent =
-        allLeaves.filter(leave => leave.status === "Pending").length;
+        allLeaves.filter(
+          leave => leave.status === "Pending"
+        ).length;
 
       document.getElementById("approvedLeaves").textContent =
-        allLeaves.filter(leave => leave.status === "Approved").length;
+        allLeaves.filter(
+          leave => leave.status === "Approved"
+        ).length;
+
+      document.getElementById("rejectedLeaves").textContent =
+        allLeaves.filter(
+          leave => leave.status === "Rejected"
+        ).length;
 
       renderLeaves();
     }
 
+    // Display leave applications
     function renderLeaves() {
-      const filter = document.getElementById("statusFilter").value;
-      const search = document.getElementById("searchInput")
-        .value.trim().toLowerCase();
+      const filter =
+        document.getElementById("statusFilter").value;
+
+      const search =
+        document.getElementById("searchInput")
+          .value.trim().toLowerCase();
 
       const filtered = allLeaves.filter(leave => {
         const student = leave.user || {};
@@ -529,8 +555,12 @@
 
       if (filtered.length === 0) {
         const row = document.createElement("tr");
-        const cell = addCell(row, "No matching applications found.");
-        cell.colSpan = 7;
+        const cell = addCell(
+          row,
+          "No matching applications found."
+        );
+
+        cell.colSpan = 9;
         cell.className = "empty";
         leaveTable.appendChild(row);
         return;
@@ -542,9 +572,12 @@
 
         addCell(row, student.name || "Unknown student");
         addCell(row, student.rollNumber || "—");
+
         addCell(
           row,
-          leave.leaveType === "casual" ? "Casual Leave" : "Medical Leave"
+          leave.leaveType === "casual"
+            ? "Casual Leave"
+            : "Medical Leave"
         );
 
         addCell(
@@ -553,20 +586,27 @@
           formatDate(leave.endDate)
         );
 
-        addCell(row, leave.reason);
+        // Application date
+        addCell(row, formatDate(leave.createdAt));
 
+        // Student's reason
+        addCell(row, leave.reason || "—");
         const statusCell = addCell(row, "");
         const status = document.createElement("span");
         status.className = "status " + leave.status;
         status.textContent = leave.status;
         statusCell.appendChild(status);
-
+        const rejectionCell = addCell(
+          row,
+          leave.rejectionReason || "—"
+        );
+        if (leave.rejectionReason) {
+          rejectionCell.className = "rejection-text";
+        }
         const actionCell = addCell(row, "");
-
         if (leave.status === "Pending") {
           const buttons = document.createElement("div");
           buttons.className = "action-buttons";
-
           const approveBtn = document.createElement("button");
           approveBtn.className = "btn approve";
           approveBtn.textContent = "Approve";
@@ -574,7 +614,6 @@
           approveBtn.addEventListener("click", () => {
             updateLeave(leave._id, "Approved");
           });
-
           const rejectBtn = document.createElement("button");
           rejectBtn.className = "btn reject";
           rejectBtn.textContent = "Reject";
@@ -582,123 +621,136 @@
           rejectBtn.addEventListener("click", () => {
             updateLeave(leave._id, "Rejected");
           });
-
           buttons.append(approveBtn, rejectBtn);
           actionCell.appendChild(buttons);
         } else {
           actionCell.textContent = "Processed";
         }
-
         leaveTable.appendChild(row);
       });
     }
-
     async function updateLeave(id, status) {
-      const action = status === "Approved" ? "approve" : "reject";
+      let rejectionReason = "";
+      if (status === "Rejected") {
+        rejectionReason = prompt(
+          "Enter the reason for rejecting this leave application:"
+        );
+        if (rejectionReason === null) {
+          return;
+        }
+        rejectionReason = rejectionReason.trim();
+        if (!rejectionReason) {
+          alert("Please enter a rejection reason.");
+          return;
+        }
+        if (rejectionReason.length > 500) {
+          alert("Rejection reason cannot exceed 500 characters.");
+          return;
+        }
+      }
+      const action =
+        status === "Approved" ? "approve" : "reject";
 
-      if (!confirm("Are you sure you want to " + action + " this request?")) {
+      if (!confirm(
+        "Are you sure you want to " + action + " this request?"
+      )) {
         return;
       }
-
       try {
-        await api("/api/admin/leaves/" + encodeURIComponent(id), {
-          method: "PATCH",
-          body: JSON.stringify({ status })
-        });
-
+        const data = await api(
+          "/api/admin/leaves/" + encodeURIComponent(id),
+          {
+            method: "PATCH",
+            body: JSON.stringify({
+              status,
+              rejectionReason
+            })
+          }
+        );
         showMessage(
           applicationMessage,
-          "Leave application " + status.toLowerCase() + " successfully.",
+          data.message || "Application updated successfully.",
           true
         );
-
-        await Promise.all([loadLeaves(), loadStudents()]);
+        await Promise.all([
+          loadLeaves(),
+          loadStudents()
+        ]);
       } catch (error) {
         showMessage(applicationMessage, error.message);
       }
     }
-
     async function loadStudents() {
       try {
         allStudents = await api("/api/admin/students");
-
-        document.getElementById("totalStudents").textContent =
-          allStudents.length;
-
-        document.getElementById("studentCount").textContent =
-          allStudents.length + " student(s)";
-
+        document.getElementById("totalStudents").textContent =allStudents.length;
+        document.getElementById("studentCount").textContent =allStudents.length + " student(s)";
         studentTable.replaceChildren();
-
         if (allStudents.length === 0) {
           const row = document.createElement("tr");
-          const cell = addCell(row, "No student accounts found.");
+          const cell = addCell(
+            row,
+            "No student accounts found."
+          );
           cell.colSpan = 6;
           cell.className = "empty";
           studentTable.appendChild(row);
           return;
         }
-
         allStudents.forEach((student, index) => {
           const row = document.createElement("tr");
-
           addCell(row, index + 1);
           addCell(row, student.name || "—");
           addCell(row, student.rollNumber || "—");
           addCell(row, student.email || "—");
           addCell(row, (student.casualLeave ?? 0) + " days");
           addCell(row, (student.medicalLeave ?? 0) + " days");
-
           studentTable.appendChild(row);
         });
       } catch (error) {
-        document.getElementById("studentCount").textContent =
-          "Unable to load students";
-
+        document.getElementById("studentCount").textContent ="Unable to load students";
         studentTable.replaceChildren();
-
         const row = document.createElement("tr");
         const cell = addCell(row, error.message);
         cell.colSpan = 6;
         cell.className = "empty";
         studentTable.appendChild(row);
-
         showMessage(studentMessage, error.message);
         throw error;
       }
     }
-
     document.getElementById("statusFilter").addEventListener(
       "change",
       renderLeaves
     );
-
     document.getElementById("searchInput").addEventListener(
       "input",
       renderLeaves
     );
-
     document.getElementById("logoutBtn").addEventListener(
       "click",
       async () => {
         try {
-          await api("/api/auth/logout", { method: "POST" });
+          await api("/api/auth/logout", {
+            method: "POST"
+          });
           window.location.href = "/";
         } catch (error) {
           showMessage(applicationMessage, error.message);
         }
       }
     );
-
     async function init() {
       try {
         await checkAdmin();
-        await Promise.all([loadLeaves(), loadStudents()]);
+        await Promise.all([
+          loadLeaves(),
+          loadStudents()
+        ]);
       } catch (error) {
         showMessage(applicationMessage, error.message);
       }
     }
-
     init();
   </script>
 </body>

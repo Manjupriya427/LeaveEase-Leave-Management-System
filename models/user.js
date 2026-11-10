@@ -1,6 +1,4 @@
-
 const mongoose = require("mongoose");
-
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -30,11 +28,13 @@ const userSchema = new mongoose.Schema({
   },
   casualLeave: {
     type: Number,
-    default: 12
+    default: 5,
+    min: 0
   },
   medicalLeave: {
     type: Number,
-    default: 6
+    default: 15,
+    min: 0
   }
 }, {
   timestamps: true

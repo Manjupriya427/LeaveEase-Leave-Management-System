@@ -5,17 +5,28 @@ const User = require("../models/user");
 
 const router = express.Router();
 
-// Student registration
+// STUDENT REGISTRATION
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, rollNumber } = req.body;
 
-    if (!name || !email || !password || !rollNumber) {
+    // Validate required fields
+    if (
+      typeof name !== "string" ||
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      typeof rollNumber !== "string" ||
+      !name.trim() ||
+      !email.trim() ||
+      !password ||
+      !rollNumber.trim()
+    ) {
       return res.status(400).json({
         message: "Please fill in all required fields."
       });
     }
 
+    // Validate password
     if (password.length < 8) {
       return res.status(400).json({
         message: "Password must contain at least 8 characters."
@@ -25,6 +36,7 @@ router.post("/register", async (req, res) => {
     const normalizedEmail = email.trim().toLowerCase();
     const normalizedRoll = rollNumber.trim();
 
+    // Check existing email or roll number
     const existingUser = await User.findOne({
       $or: [
         { email: normalizedEmail },
@@ -38,22 +50,24 @@ router.post("/register", async (req, res) => {
       });
     }
 
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Always create a student account.
+    // Leave balances use the defaults in User.js.
     const user = await User.create({
       name: name.trim(),
       email: normalizedEmail,
       password: hashedPassword,
       rollNumber: normalizedRoll,
-      role: "student",
-      casualLeave: 12,
-      medicalLeave: 6
+      role: "student"
     });
 
     return res.status(201).json({
       message: "Registration successful! Please sign in.",
       userId: user._id
     });
+
   } catch (error) {
     console.error("Registration error:", error.message);
 
@@ -69,17 +83,24 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Student or administrator login
+
+// COMMON LOGIN FOR STUDENTS AND ADMINISTRATORS
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
+    if (
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      !email.trim() ||
+      !password
+    ) {
       return res.status(400).json({
         message: "Email and password are required."
       });
     }
 
+    // Find user by email
     const user = await User.findOne({
       email: email.trim().toLowerCase()
     });
@@ -90,6 +111,7 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    // Verify password
     const passwordMatches = await bcrypt.compare(
       password,
       user.password
@@ -101,22 +123,32 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    // Verify account role
+    if (!["student", "admin"].includes(user.role)) {
+      return res.status(403).json({
+        message: "Invalid account role. Please contact the administrator."
+      });
+    }
+
+    // Save user details in session
     req.session.userId = user._id.toString();
     req.session.role = user.role;
 
     return req.session.save((error) => {
       if (error) {
         console.error("Session save error:", error.message);
+
         return res.status(500).json({
           message: "Unable to start your session."
         });
       }
 
-      res.json({
+      return res.json({
         message: "Login successful!",
         role: user.role
       });
     });
+
   } catch (error) {
     console.error("Login error:", error.message);
 
@@ -126,7 +158,8 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Get current logged-in user's details
+
+// GET CURRENT LOGGED-IN USER
 router.get("/me", async (req, res) => {
   try {
     if (!req.session || !req.session.userId) {
@@ -144,17 +177,19 @@ router.get("/me", async (req, res) => {
       });
     }
 
-    res.json(user);
+    return res.json(user);
+
   } catch (error) {
     console.error("Get user error:", error.message);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Unable to load user details."
     });
   }
 });
 
-// Logout
+
+// LOGOUT
 router.post("/logout", (req, res) => {
   if (!req.session) {
     return res.json({

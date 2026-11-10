@@ -8,11 +8,13 @@ require("dotenv").config();
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session middleware MUST come before authentication routes
+// Session middleware
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "leaveease-dev-secret-change-me",
@@ -24,7 +26,8 @@ app.use(
     cookie: {
       httpOnly: true,
       maxAge: 1000 * 60 * 60,
-      secure: false
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax"
     }
   })
 );
@@ -57,7 +60,11 @@ app.use("/api", (req, res) => {
 async function startServer() {
   try {
     if (!process.env.MONGO_URI) {
-      throw new Error("MONGO_URI is missing from the .env file.");
+      throw new Error("MONGO_URI is missing.");
+    }
+
+    if (process.env.NODE_ENV === "production" && !process.env.SESSION_SECRET) {
+      throw new Error("SESSION_SECRET is missing.");
     }
 
     await mongoose.connect(process.env.MONGO_URI);
@@ -66,7 +73,7 @@ async function startServer() {
     const PORT = process.env.PORT || 5050;
 
     app.listen(PORT, () => {
-      console.log(`Server running at http://localhost:${PORT}`);
+      console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
     console.error("Server startup failed:", error.message);

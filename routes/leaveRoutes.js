@@ -1,7 +1,10 @@
 
 const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
+
 const Leave = require("../models/leave");
+const User = require("../models/user");
 
 // Check whether the user is logged in
 function isLoggedIn(req, res, next) {
@@ -14,23 +17,67 @@ function isLoggedIn(req, res, next) {
   next();
 }
 
+// Check whether the logged-in user is a student
+async function isStudent(req, res, next) {
+  try {
+    const user = await User.findById(req.session.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User account not found."
+      });
+    }
+
+    if (user.role !== "student") {
+      return res.status(403).json({
+        message: "Only students can perform this action."
+      });
+    }
+
+    next();
+
+  } catch (error) {
+    console.error("Student verification error:", error.message);
+
+    res.status(500).json({
+      message: "Unable to verify user."
+    });
+  }
+}
+
 // Apply for leave
-router.post("/", isLoggedIn, async (req, res) => {
+router.post("/", isLoggedIn, isStudent, async (req, res) => {
   try {
     const { leaveType, startDate, endDate, reason } = req.body;
 
+    // Validate required fields
     if (!leaveType || !startDate || !endDate || !reason) {
       return res.status(400).json({
         message: "Please fill in all leave details."
       });
     }
 
+    // Validate leave type
     if (!["casual", "medical"].includes(leaveType)) {
       return res.status(400).json({
         message: "Invalid leave type."
       });
     }
 
+    // Validate reason
+    if (typeof reason !== "string" || !reason.trim()) {
+      return res.status(400).json({
+        message: "Please enter a valid reason."
+      });
+    }
+
+    if (reason.trim().length > 500) {
+      return res.status(400).json({
+        message: "Reason cannot exceed 500 characters."
+      });
+    }
+
+    // Validate dates
     const start = new Date(startDate);
     const end = new Date(endDate);
 
@@ -44,6 +91,20 @@ router.post("/", isLoggedIn, async (req, res) => {
       });
     }
 
+    // Prevent past leave applications
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    start.setHours(0, 0, 0, 0);
+    end.setHours(0, 0, 0, 0);
+
+    if (start < today) {
+      return res.status(400).json({
+        message: "Leave start date cannot be in the past."
+      });
+    }
+
+    // Create leave application
     const leave = await Leave.create({
       user: req.session.userId,
       leaveType,
@@ -57,8 +118,10 @@ router.post("/", isLoggedIn, async (req, res) => {
       message: "Leave application submitted successfully!",
       leave
     });
+
   } catch (error) {
     console.error("Apply leave error:", error.message);
+
     res.status(500).json({
       message: "Unable to submit leave application."
     });
@@ -66,15 +129,17 @@ router.post("/", isLoggedIn, async (req, res) => {
 });
 
 // View the logged-in student's leave applications
-router.get("/my-leaves", isLoggedIn, async (req, res) => {
+router.get("/my-leaves", isLoggedIn, isStudent, async (req, res) => {
   try {
     const leaves = await Leave.find({
       user: req.session.userId
     }).sort({ createdAt: -1 });
 
     res.json(leaves);
+
   } catch (error) {
     console.error("Fetch leaves error:", error.message);
+
     res.status(500).json({
       message: "Unable to retrieve leave applications."
     });
@@ -82,8 +147,15 @@ router.get("/my-leaves", isLoggedIn, async (req, res) => {
 });
 
 // Cancel a pending leave application
-router.delete("/:id", isLoggedIn, async (req, res) => {
+router.delete("/:id", isLoggedIn, isStudent, async (req, res) => {
   try {
+    // Validate MongoDB ID
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).json({
+        message: "Invalid leave application ID."
+      });
+    }
+
     const leave = await Leave.findOne({
       _id: req.params.id,
       user: req.session.userId,
@@ -101,8 +173,10 @@ router.delete("/:id", isLoggedIn, async (req, res) => {
     res.json({
       message: "Leave application cancelled successfully."
     });
+
   } catch (error) {
     console.error("Cancel leave error:", error.message);
+
     res.status(500).json({
       message: "Unable to cancel leave application."
     });

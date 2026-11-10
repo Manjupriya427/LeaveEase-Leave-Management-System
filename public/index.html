@@ -5,50 +5,268 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LeaveEase | Leave Management</title>
+
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      background: #F5EBDD;
+      font-family: Arial, sans-serif;
+      color: #3B241B;
+    }
+
+    .login-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      max-width: 950px;
+      min-height: 550px;
+      overflow: hidden;
+      background: #FFFDF8;
+      border: 1px solid #E5D3BD;
+      border-radius: 20px;
+      box-shadow: 0 12px 35px rgba(59, 36, 27, 0.12);
+    }
+
+    .welcome-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+      background: #3B241B;
+      color: #F5EBDD;
+    }
+
+    .brand {
+      font-size: 27px;
+      font-weight: bold;
+      color: #E5D3BD;
+    }
+
+    .welcome-content {
+      margin: 40px 0;
+    }
+
+    .eyebrow,
+    .mini-label {
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #BFA58C;
+    }
+
+    .welcome-content p {
+      max-width: 340px;
+      line-height: 1.8;
+      color: #E5D3BD;
+    }
+
+    .welcome-decoration {
+      margin-top: 30px;
+      font-size: 25px;
+      color: #BFA58C;
+    }
+
+    .footer-note {
+      color: #D8C2AA;
+      font-size: 13px;
+    }
+
+    .login-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 45px;
+      background: #FFFDF8;
+    }
+
+    .login-heading h2 {
+      margin: 12px 0;
+      font-size: 27px;
+      color: #3B241B;
+    }
+
+    .login-heading p {
+      margin-bottom: 30px;
+      color: #8B7565;
+    }
+
+    label {
+      display: block;
+      margin: 18px 0 8px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #3B241B;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #E5D3BD;
+      border-radius: 9px;
+      background: #FFFDF8;
+      color: #3B241B;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: 2px solid #8B7565;
+      border-color: #6B4532;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 14px;
+      border: none;
+      border-radius: 9px;
+      background: #6B4532;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #3B241B;
+    }
+
+    .message {
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .login-help {
+      margin-top: 20px;
+      color: #8B7565;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    a {
+      color: #6B4532;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 15px;
+      }
+
+      .login-container {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome-panel {
+        min-height: 230px;
+        padding: 25px;
+      }
+
+      .welcome-content {
+        margin: 25px 0;
+      }
+
+      .login-panel {
+        padding: 30px 25px;
+      }
+    }
+  </style>
 </head>
+
 <body>
+
   <main class="login-container">
+
     <section class="welcome-panel">
+
       <div class="brand">✿ LeaveEase</div>
+
       <div class="welcome-content">
         <span class="eyebrow">LEAVE MANAGEMENT PORTAL</span>
-        <h1>Take a breath.<br>We'll handle the rest.</h1>
-        <p>Apply for leave, track your requests, and manage everything in one simple place.</p>
-        <div class="welcome-decoration">☁ &nbsp; ✦ &nbsp; ♡</div>
+
+        <p>
+          Apply for leave, track your requests, and manage everything
+          in one simple place.
+        </p>
+
+        <div class="welcome-decoration">
+          ☁ &nbsp; ✦ &nbsp; ♡
+        </div>
       </div>
-      <p class="footer-note">A little more balance, every day.</p>
+
+      <p class="footer-note">
+        A little more balance, every day.
+      </p>
+
     </section>
 
     <section class="login-panel">
+
       <div class="login-heading">
         <span class="mini-label">WELCOME BACK</span>
+
         <h2>Sign in to your account</h2>
+
         <p>Enter your details to continue.</p>
       </div>
 
       <form id="loginForm">
+
         <label for="email">Email address</label>
-        <input id="email" type="email" placeholder="you@example.com" required>
+
+        <input
+          id="email"
+          type="email"
+          placeholder="you@example.com"
+          required
+        >
 
         <label for="password">Password</label>
-        <input id="password" type="password" placeholder="Enter your password" required>
 
-        <button type="submit">Sign in <span>→</span></button>
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          required
+        >
+
+        <button type="submit">
+          Sign in <span>→</span>
+        </button>
+
         <p id="message" class="message"></p>
+
       </form>
 
       <p class="login-help">
-  Student and administrator accounts use the same sign-in page.
-</p>
+        Student and administrator accounts use the same sign-in page.
+      </p>
 
-<p class="login-help">
-  Don't have a student account?
-  <a href="register.html">Create an account</a>
-</p>
+      <p class="login-help">
+        Don't have a student account?
+        <a href="register.html">Create an account</a>
+      </p>
+
     </section>
+
   </main>
 
   <script src="app.js"></script>
+
 </body>
 </html>

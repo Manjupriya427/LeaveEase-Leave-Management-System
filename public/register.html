@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,13 +5,167 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LeaveEase | Create Account</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: #F5EBDD;
+    }
+    .register-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 35px;
+      gap: 35px;
+    }
+    .register-page .welcome-panel {
+      background: #3B241B;
+      color: #FFFDF8;
+      border-radius: 22px;
+      padding: 45px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 650px;
+    }
+    .register-page .welcome-panel h1,
+    .register-page .welcome-panel p {
+      color: #FFFDF8;
+    }
+    .register-page .brand {
+      font-size: 25px;
+      font-weight: bold;
+    }
+    .register-page .welcome-content {
+      max-width: 430px;
+    }
+    .register-page .eyebrow,
+    .register-page .mini-label {
+      color: #A98569;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    .register-page .welcome-content h1 {
+      font-size: clamp(32px, 4vw, 48px);
+      line-height: 1.2;
+      margin: 18px 0;
+    }
+    .register-page .welcome-content p {
+      line-height: 1.7;
+    }
+    .register-page .welcome-decoration {
+      margin-top: 35px;
+      font-size: 30px;
+      color: #D8B99A;
+    }
+    .register-page .footer-note {
+      font-size: 13px;
+      color: #D8B99A;
+    }
+    .register-page .login-panel {
+      background: #FFFDF8;
+      border: 1px solid #E5D3BD;
+      border-radius: 22px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+    .register-page .login-heading {
+      margin-bottom: 25px;
+    }
+    .register-page .login-heading h2 {
+      color: #3B241B;
+      font-size: 30px;
+      margin: 12px 0;
+    }
+    .register-page .login-heading p {
+      color: #8B7565;
+    }
+    .register-page form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    .register-page form label {
+      color: #3B241B;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 12px 0 7px;
+    }
+    .register-page form input {
+      width: 100%;
+      height: 46px;
+      padding: 0 13px;
+      border: 1px solid #E5D3BD;
+      border-radius: 8px;
+      background: #FFFFFF;
+      color: #3B241B;
+      font-size: 14px;
+    }
+    .register-page form input:focus {
+      outline: none;
+      border-color: #6B4532;
+    }
+    .register-page form button {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 25px;
+      border: none;
+      border-radius: 8px;
+      background: #6B4532;
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .register-page form button:hover {
+      background: #4D3023;
+    }
+    .register-page .message {
+      margin-top: 12px;
+      font-size: 14px;
+    }
+    .register-page .login-help {
+      margin-top: 22px;
+      text-align: center;
+      color: #8B7565;
+      font-size: 14px;
+    }
+    .register-page .login-help a {
+      color: #6B4532;
+      font-weight: bold;
+    }
+    @media (max-width: 750px) {
+      .register-page {
+        grid-template-columns: 1fr;
+        padding: 18px;
+        gap: 18px;
+      }
+      .register-page .welcome-panel {
+        min-height: 280px;
+        padding: 28px;
+      }
+      .register-page .welcome-content h1 {
+        font-size: 32px;
+      }
+      .register-page .footer-note {
+        margin-top: 25px;
+      }
+      .register-page .login-panel {
+        padding: 28px 22px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <main class="login-container">
-
+  <main class="register-page">
     <section class="welcome-panel">
       <div class="brand">✿ LeaveEase</div>
-
       <div class="welcome-content">
         <span class="eyebrow">YOUR JOURNEY STARTS HERE</span>
         <h1>A little more balance, every day.</h1>
@@ -22,66 +175,39 @@
         </p>
         <div class="welcome-decoration">☁ &nbsp; ✦ &nbsp; ♡</div>
       </div>
-
       <p class="footer-note">Simple. Secure. Student-friendly.</p>
     </section>
-
     <section class="login-panel">
       <div class="login-heading">
         <span class="mini-label">CREATE ACCOUNT</span>
         <h2>Create your account</h2>
         <p>Register to access the LeaveEase portal.</p>
       </div>
-
       <form id="registerForm">
         <label for="name">Full name</label>
-        <input
-          id="name"
-          type="text"
-          placeholder="Your full name"
-          required
-        >
-
+        <input id="name" type="text"
+          placeholder="Your full name" required>
         <label for="rollNumber">Roll number</label>
-        <input
-          id="rollNumber"
-          type="text"
-          placeholder="Your roll number"
-          required
-        >
-
+        <input id="rollNumber" type="text"
+          placeholder="Your roll number" required>
         <label for="email">Email address</label>
-        <input
-          id="email"
-          type="email"
-          placeholder="you@example.com"
-          required
-        >
-
+        <input id="email" type="email"
+          placeholder="you@example.com" required>
         <label for="password">Password (minimum 8 characters)</label>
-        <input
-          id="password"
-          type="password"
+        <input id="password" type="password"
           placeholder="Create a password"
-          minlength="8"
-          required
-        >
-
+          minlength="8" required>
         <button type="submit">
           Create account <span>→</span>
         </button>
-
         <p id="message" class="message" aria-live="polite"></p>
       </form>
-
       <p class="login-help">
         Already have an account?
         <a href="index.html">Sign in</a>
       </p>
     </section>
-
   </main>
-
   <script src="register.js"></script>
 </body>
 </html>
